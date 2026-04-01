@@ -1,4 +1,5 @@
 default(timer,1);
+\\ install("ellheegner_d","GL");
 solve_xy(S,XY) = {
     my(C,M,n,m,res);
     M   = matrix(2,2,n,m,polcoef(S[n],1,XY[m]));
