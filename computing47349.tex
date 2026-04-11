@@ -375,7 +375,7 @@ To evaluate the computational efficiency of the proposed method, we take the ell
 \begin{equation*}
 y^2 + y = x^3 - 5115523309x - 140826120488927
 \end{equation*}
-The 4-descent of this curve is given by the following two quadric equations:
+Its canonical height is around 12557, and the 4-descent of this curve is given by the following two quadric equations:
 
 \begin{eqnarray*}
     0&=&x_1x_2 + 3x_1x_4 + 4x_2^2 + 5x_2x_3 \\
@@ -393,12 +393,23 @@ All computations are performed on a computer equipped with an Intel(R) Xeon(R) S
 \hline
 Software & Function & Time \\
 \hline
-Pari/GP & ellheegner & 16h, 46min, 13,750 ms \\
-Pari/GP & ellheegner4d & 1h, 26min, 53,649 ms \\
-MAGMA   & HeegnerPoints & 2h, 29min, 39,700 ms \\
+    Pari/GP & \texttt{ellheegner} & 16h, 46min, 13,750 ms \\
+    Pari/GP & \texttt{ellheegner4d} & 1h, 26min, 53,649 ms \\
+    MAGMA   & \texttt{HeegnerPoints} & 2h, 29min, 39,700 ms \\
 \hline
 \end{tabular}
 \end{table}
+
+In the MAGMA computational environment, the \texttt{HeegnerPoints} function can be integrated with the 4-descent method for generator computation, and the specific implementation code is provided as follows. 
+
+\begin{lstlisting}[caption={MAGMA code for 4-descent and HeegnerPoints computation}]
+E := EllipticCurve([0,0,1,-5115523309,-140826120488927]);
+T2 := TwoDescent(E);
+T4 := FourDescent(T2[1]);
+P  := HeegnerPoints(T4[1]);
+P;
+\end{lstlisting}
+It should be noted that the \texttt{HeegnerPoints} function (in MAGMA) and the \texttt{ellheegner4d} function (in Pari/GP) represent two different implementations of the same underlying method. Quantitative analysis indicates that \texttt{ellheegner4d} achieves a computational efficiency improvement of more than 50\% compared to \texttt{HeegnerPoints}. Furthermore, in contrast to the traditional \texttt{ellheegner} function (in Pari/GP), the \texttt{ellheegner4d} function is more than 10 times faster.
 
 \subsection{A Computational Example}
 To demonstrate the effectiveness of the proposed method for computing
@@ -468,9 +479,12 @@ Additionally, optimizing the existing code to reduce computational
 time and expand the scope of applicable curves can be another important
 research direction.
 
+
+\section*{Acknowledgement}
+The author would like to express sincere gratitude to Mr. Bill Allombert for his careful review of this paper. His valuable suggestions and insightful comments have greatly contributed to the improvement of the paper's quality and the refinement of its content. Additionally, the author acknowledges that the data presented in Subsection 3.1 of this paper was kindly provided by Mr. Bill Allombert.
+
 \bibliographystyle{plain}
 \bibliography{computing47349}
-
 \newpage
 
 \section*{Appendix 1}
