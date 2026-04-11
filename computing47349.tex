@@ -369,8 +369,38 @@ For the second-order derivatives, we solve the linear system
 by substituting $\left.y^{'}\right|_{x=x_{0}}$ and $\left.z^{'}\right|_{x=x_{0}}$,
 obtaining $\left.y^{''}\right|_{x=x_{0}}$ and $\left.z^{''}\right|_{x=x_{0}}$.
 
-\section{An Example}
+\section{Results}
+\subsection{Computational Efficiency Comparison}
+To evaluate the computational efficiency of the proposed method, we take the elliptic curve defined by the Weierstrass equation:
+\begin{equation*}
+y^2 + y = x^3 - 5115523309x - 140826120488927
+\end{equation*}
+The 4-descent of this curve is given by the following two quadric equations:
 
+\begin{eqnarray*}
+    0&=&x_1x_2 + 3x_1x_4 + 4x_2^2 + 5x_2x_3 \\
+    &&- 5x_2x_4 + 7x_3^2 + 10x_3x_4 + 8x_4^2 \\
+    0&=&3x_1^2 - 27x_1x_2 + 29x_1x_3 - 10x_1x_4 + 11x_2^2\\
+    & &- 9x_2x_3 - 4x_2x_4 + 8x_3^2 + 10x_3x_4 + 3x_4^2
+\end{eqnarray*}
+
+All computations are performed on a computer equipped with an Intel(R) Xeon(R) Silver 4210R CPU @ 2.40GHz (running at 3.2GHz) and 128GB of RAM. The computational time consumed by different software and functions is summarized in Table \ref{tab:computational_time}.
+\begin{table}[h]
+\centering
+\caption{Computational Time Comparison}
+\label{tab:computational_time}
+\begin{tabular}{lll}
+\hline
+Software & Function & Time \\
+\hline
+Pari/GP & ellheegner & 16h, 46min, 13,750 ms \\
+Pari/GP & ellheegner4d & 1h, 26min, 53,649 ms \\
+MAGMA   & HeegnerPoints & 2h, 29min, 39,700 ms \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{A Computational Example}
 To demonstrate the effectiveness of the proposed method for computing
 generators of rank 1 elliptic curves with high canonical heights,
 we select an elliptic curve from the Stein and Watkins database \cite{goos_database_2002,stein_httpsgithubcomsagemathdatabase_stein_watkins_nodate}.
