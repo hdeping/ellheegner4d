@@ -398,12 +398,12 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
     
     \\ Compute Heegner point z-coordinate if not provided
     if(Z == -1, 
-        default(realprecision,prec1);
+        localbitprec(prec1);
         Z = ellheegner_z(E,prec2);
     );
     print("Z = ",Z);
     
-    default(realprecision,prec1*3);
+    localbitprec(prec1*3);
     z1   = Z[1]; 
     t1   = Z[2][1];
     t2   = Z[2][2];
@@ -476,7 +476,7 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
 
 \\ Convert a point from original model to minimal model
 get_minimalmodel_point(M1,M2,P) = {
-    default(realprecision,38);
+    localprec(38);
     my(x1,y1,F,IJ,e1,e2);
     \\ Compute determinant to get quartic
     S  = matdet(x*M1+M2);
