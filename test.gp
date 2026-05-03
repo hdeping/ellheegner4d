@@ -440,7 +440,7 @@ test13(index) = {
 
     P = ellheegner_4descent(E,M1,M2,height);
 }
-test29() = {
+test14() = {
     my(E,X,S);
     E = ellinit([-23337689760, -1372255268832864]);
     X = [x1,x2,x3,x4];

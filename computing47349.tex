@@ -409,7 +409,7 @@ T4 := FourDescent(T2[1]);
 P  := HeegnerPoints(T4[1]);
 P;
 \end{lstlisting}
-It should be noted that the \texttt{HeegnerPoints} function (in MAGMA) and the \texttt{ellheegner4d} function (in Pari/GP) represent two different implementations of the same underlying method. Quantitative analysis indicates that \texttt{ellheegner4d} achieves a computational efficiency improvement of more than 50\% compared to \texttt{HeegnerPoints}. Furthermore, in contrast to the traditional \texttt{ellheegner} function (in Pari/GP), the \texttt{ellheegner4d} function is more than 10 times faster.
+It should be noted that the \texttt{HeegnerPoints} function (in MAGMA) and the \texttt{ellheegner4d} function (in Pari/GP) represent two different implementations of the same underlying method. Quantitative analysis indicates that \texttt{ellheegner4d} achieves a computational efficiency improvement of more than 50\% compared to \texttt{HeegnerPoints}. The primary reason for the superior performance of \texttt{ellheegner4d} compared to MAGMA is that the computation of z-values is more efficient in Pari/GP. Furthermore, in contrast to the traditional \texttt{ellheegner} function (in Pari/GP), the \texttt{ellheegner4d} function is more than 10 times faster. 
 
 \subsection{A Computational Example}
 To demonstrate the effectiveness of the proposed method for computing

@@ -1,4 +1,4 @@
-# ellheegner4d
+#29 ellheegner4d
 ## Abstract
 
 This paper introduces a computational tool designed for computing
@@ -15,7 +15,7 @@ open-sourced on the GitHub platform.
 Please find the complete article in the file computing47349.pdf.
 ## Demo of Computing the Generator
 
-```python
+```
 \\ height 47349
 E = ellinit([0, -1, 1, -636884234186034, -6186412091784687672887]);
 X = [x1,x2,x3,x4];
@@ -32,3 +32,15 @@ P = ellheegner_4descent(E,M1,M2,height);
 P1 = get_minimalmodel_point(M1,M2,P);
 
 ```
+
+## Test Functions
+
+The `test.gp` file contains several test functions (from `test01()` to `test14()`) that demonstrate the usage of the ellheegner4d method to calculate generators for different elliptic curves. These test functions showcase the application of the Heegner point and 4-descent method on various elliptic curves with different heights and coefficients.
+
+Each test function typically:
+- Initializes an elliptic curve with specific coefficients
+- Defines quadratic forms `s1` and `s2` to construct matrices `M1` and `M2`
+- Computes the L-function value to determine the expected height
+- Uses the `ellheegner_4descent()` function to compute the generator
+- Converts the result to the minimal model using `get_minimalmodel_point()`
+
