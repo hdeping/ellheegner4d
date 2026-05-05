@@ -1,5 +1,5 @@
 \\ Load external function
-install("ellheegner_z","GL");
+install("ellheegner_z","GL","ellanal");
 
 \\ Solve linear system of equations for variables XY
 solve_xy(S,XY) = {
@@ -398,12 +398,12 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
     
     \\ Compute Heegner point z-coordinate if not provided
     if(Z == -1, 
-        localbitprec(prec1);
+        localbitprec(prec2);
         Z = ellheegner_z(E,prec2);
     );
     print("Z = ",Z);
     
-    localbitprec(prec1*3);
+    localprec(prec1*3);
     z1   = Z[1]; 
     t1   = Z[2][1];
     t2   = Z[2][2];

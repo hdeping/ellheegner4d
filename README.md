@@ -35,9 +35,9 @@ P1 = get_minimalmodel_point(M1,M2,P);
 
 ## Test Functions
 
-The `test.gp` file contains several test functions (from `test01()` to `test14()`) that demonstrate the usage of the ellheegner4d method to calculate generators for different elliptic curves. These test functions showcase the application of the Heegner point and 4-descent method on various elliptic curves with different heights and coefficients.
+The `test.gp` file contains a test function that demonstrates the usage of the ellheegner4d method to calculate generators for different elliptic curves. This test function showcases the application of the Heegner point and 4-descent method on various elliptic curves with different heights and coefficients.
 
-Each test function typically:
+The test function typically:
 - Initializes an elliptic curve with specific coefficients
 - Defines quadratic forms `s1` and `s2` to construct matrices `M1` and `M2`
 - Computes the L-function value to determine the expected height
