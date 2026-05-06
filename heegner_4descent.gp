@@ -1,6 +1,3 @@
-\\ Load external function
-install("ellheegner_z","GL","ellanal");
-
 \\ Solve linear system of equations for variables XY
 solve_xy(S,XY) = {
     my(C,M,n,m,res);
@@ -18,14 +15,14 @@ get_heegner_4d_derivs(S,X,X0) = {
     my(x0,y0,z0,Y1,Y2,Z1,Z2,S1,S2,YZ1,YZ2,S0);
     \\ Define symbolic variables
     [Y1,Y2,Z1,Z2] = ['Y1,'Y2,'Z1,'Z2];
-    
+
     \\ First derivative of S
     S1 = deriv(S,X[2]);
     S1 += deriv(S,X[3])*Y1;
     S1 += deriv(S,X[4])*Z1;
     S0 = substvec(S1,X,X0);
     YZ1 = solve_xy(S0,[Y1,Z1]);
-    
+
     \\ Second derivative of S
     S2 =  deriv(S1,X[2]);
     S2 += deriv(S1,X[3])*Y1;
@@ -35,15 +32,15 @@ get_heegner_4d_derivs(S,X,X0) = {
     S0 = substvec(S2,X,X0);
     S0 = substvec(S0,[Y1,Z1],YZ1);
     YZ2 = solve_xy(S0,[Y2,Z2]);
-    
+
     my(Y,Y0,n,i,j);
     Y = [Y1,Y2,Z1,Z2];
     Y0 = [YZ1,YZ2];
 
     \\ Extract coefficients from derivatives
-    for(n = 1,4, 
-        for(i = 1,2, 
-            for(j = 1,2, 
+    for(n = 1,4,
+        for(i = 1,2,
+            for(j = 1,2,
                 Y0[i][j] = polcoef(Y0[i][j],0,X[n]);
                 Y0[i][j] = polcoef(Y0[i][j],0,Y[n]);
             );
@@ -62,17 +59,17 @@ get_heegner_M4(S,X,X0,B) = {
     \\ X0 = [x0,y0,z0] <- [1,x2,x3,x4]/
     my(x0,y0,z0,S1,y1,y2,z1,z2,e1);
     [x0,y0,z0] = [X0[2],X0[3],X0[4]];
-    
+
     \\ Substitute x1 = 1 into S
     S1 = subst(S,X[1],1);
     [y1,z1,y2,z2] = get_heegner_4d_derivs(S1,X,X0);
-    
+
     my(B2,B3,y10,z10);
     e = z2/y2;
     B2 = B^2; B3 = B^3;
     y10 = (y1*x0-y0);
     z10 = (z1*x0-z0);
-    
+
     \\ Construct the 4x4 transformation matrix
     M4 = [
     1,-x0*B,y10*B2,(-e*y10+z10)*B3;
@@ -87,15 +84,15 @@ get_heegner_M4(S,X,X0,B) = {
 get_mat_4(s1,X) = {
     my(f1,n,m,M1);
     M1 = matrix(4);
-    
+
     \\ Compute second partial derivatives to get the quadratic form matrix
-    for(n = 1,4, 
+    for(n = 1,4,
         f1 = deriv(s1,X[n]);
-        for(m = 1,4, 
+        for(m = 1,4,
             M1[n,m] = deriv(f1,X[m])/2;
         );
     );
-    
+
     \\ Substitute symbolic variables with 1
     M1 = substvec(M1,X,[1,1,1,1]);
     return(M1);
@@ -116,7 +113,7 @@ get_tu(arr,P) = {
     g6 =  (b^3+8*a^2*d-4*a*b*c)*x^6+2*(16*a^2*e+2*a*b*d-4*a*c^2+b^2*c)*x^5;
     g6 += 5*(8*a*b*e+b^2*d-4*a*c*d)*x^4+20*(b^2*e-a*d^2)*x^3-5*(8*a*d*e+b*d^2-4*b*c*e)*x^2;
     g6 += -2*(16*a*e^2+2*b*d*e-4*c^2*e+c*d^2)*x-(d^3+8*b*e^2-4*c*d*e);
-    
+
 
     \\ Compute t and u coordinates
     t = 3*g4/4/y^2;
@@ -134,12 +131,12 @@ get_IJ(arr) = {
     c = arr[3];
     d = arr[4];
     e = arr[5];
-    
+
     \\ Compute I invariant
     I1 = 12*a*e + (c^2 - 3*d*b);
     \\ Compute J invariant
     J  = (8*a*c - 3*b^2)*9*e + 9*d*(b*c-3*a*d) - 2*c^3;
-    
+
     return([I1,J]);
 }
 
@@ -147,10 +144,10 @@ get_IJ(arr) = {
 get_real_values(Z) = {
     my(Z0,n);
     Z0 = List();
-    
+
     \\ Loop through all elements and keep only real ones
-    for(n = 1,#Z, 
-        if(abs(imag(Z[n]))<1e-40, 
+    for(n = 1,#Z,
+        if(abs(imag(Z[n]))<1e-40,
             listput(Z0,real(Z[n]));
         );
     );
@@ -165,7 +162,7 @@ map_cubic_to_quartic(M1,M2,P) = {
     S = substvec(S,['x1,'x2,'x3,'x4],[1,1,1,1]);
     IJ = get_IJ(Vec(S));
     IJ = substvec(IJ,['x1,'x2,'x3,'x4],[1,1,1,1]);
-    
+
     \\ Initialize elliptic curve from IJ invariants
     e1 = ellinit([-27*IJ[1],-27*IJ[2]]);
     e2 = ellminimalmodel(e1,&tran);
@@ -182,18 +179,18 @@ map_cubic_to_quartic(M1,M2,P) = {
     X = get_real_values(X);
     my(XY);
     XY = List();
-    
+
     \\ For each real root, compute corresponding y coordinate
-    for(n = 1,#X, 
+    for(n = 1,#X,
         x1 = X[n];
         y1 = sqrt(subst(S,x,x1));
-        
+
         \\ Validate realness of x1 and y1
-        if(abs(imag(x1))>1e-40, 
+        if(abs(imag(x1))>1e-40,
             print("wrong x1!!!!");
             next();
         );
-        if(abs(imag(y1))>1e-40, 
+        if(abs(imag(y1))>1e-40,
             print("wrong y1!!!!");
             next();
         );
@@ -212,32 +209,32 @@ get_F1F2(M1,M2,P) = {
     m2 = matadjoint(M2);
 
     M0 = matadjoint(x*m1+m2);
-    
+
     T = [
     matrix(4),matrix(4),
     matrix(4),matrix(4)
     ];
 
     \\ Extract coefficients of adjoint matrix
-    for(n = 1,4, 
-        for(m = 1,4, 
+    for(n = 1,4,
+        for(m = 1,4,
             V = Vec(M0[n,m]);
-            for(k = 1,4, 
+            for(k = 1,4,
                 T[k][n,m] = polcoef(M0[n,m],4-k,x);
             );
         );
     );
-    
+
     d1 = T[2]/S[1];
     d2 = T[3]/S[5];
-    
+
     my(F1,F2);
     X0 = matrix(4,1,n,m,P[n]);
     X1 = mattranspose(X0);
     F1 = (X1*d1*X0)[1,1];
     F2 = (X1*d2*X0)[1,1];
     return([F1,F2]);
-    
+
 }
 
 \\ Map a real-value point (x,y) to (1,x0,y0,z0) in 4-descent
@@ -265,57 +262,57 @@ map_quartic_to_4descent(M1,M2,P) = {
     count = 0;
     count = 0;
     s5_ = 0;
-    
+
     \\ Build polynomial in z0
-    for(i = 0,4, 
+    for(i = 0,4,
         An = polcoef(s5,i,y0);
         an = 0;
-        for(j = 0,4-i, 
+        for(j = 0,4-i,
             count += 1;
             an += A[count]*z0^j;
             listput(A0,polcoef(An,j,z0));
         );
         s5_ += an*y0^i;
     );
-    
+
     \\ Final resultant to get polynomial in z0
     s6 = polresultant(s4,s5_,y0);
     s6 = substvec(s6,A,Vec(A0));
     s6 = substvec(s6,['x1,'x2,'x3,'x4],[1,1,1,1]);
     \\ Computing z0
-    
+
     my(Z,Z0,YZ0,Y,k1,k2,XYZ0);
     Z = polroots(s6);
     Z0 = get_real_values(Z);
     YZ0 = List();
-    
+
     \\ For each real z0 value, find corresponding y0 values
-    for(n = 1,#Z0, 
+    for(n = 1,#Z0,
         z0_ = Z0[n];
         S = subst([s4,s5],z0,z0_);
         S = substvec(S,['x1,'x2,'x3,'x4],[1,1,1,1]);
         Y = polroots(S[1]);
         Y = get_real_values(Y);
-        for(i = 1,#Y, 
-            k1 = abs(subst(S[2],y0,Y[i])); 
-            if(k1 < 1e-40, 
+        for(i = 1,#Y,
+            k1 = abs(subst(S[2],y0,Y[i]));
+            if(k1 < 1e-40,
                 listput(YZ0,[Y[i],z0_]);
             );
         );
     );
-    
+
     XYZ0 = List();
     \\ For each (y0, z0) pair, find corresponding x0 values
-    for(n = 1,#YZ0, 
+    for(n = 1,#YZ0,
         [y0_,z0_] = YZ0[n];
         S = substvec([s1,s2,s3],[y0,z0],[y0_,z0_]);
         S = substvec(S,['x1,'x2,'x3,'x4],[1,1,1,1]);
         X = polroots(S[1]);
         X = get_real_values(X);
-        for(i = 1,#X, 
-            k1 = abs(subst(S[2],x0,X[i])); 
-            k2 = abs(subst(S[3],x0,X[i])); 
-            if(k1 < 1e-40 && k2 < 1e-40, 
+        for(i = 1,#X,
+            k1 = abs(subst(S[2],x0,X[i]));
+            k2 = abs(subst(S[3],x0,X[i]));
+            if(k1 < 1e-40 && k2 < 1e-40,
                 listput(XYZ0,[1,X[i],y0_,z0_]);
             );
         );
@@ -332,19 +329,19 @@ ellheegner_4descent_point_by_z(E,z,M1,M2,prec=400) = {
     my(M4,Xn);
     P = ellztopoint(E,z);
     \\print("P = ",P);
-    
+
     XY = map_cubic_to_quartic(M1,M2,P);
     my(k,m);
     my(found);
     found = 0;
-    
+
     \\ For each mapped point on quartic, try to find rational point
-    for(k = 1,#XY, 
-    
+    for(k = 1,#XY,
+
         [x1_,y1] = XY[k];
         \\print("quartic: ",[x1_,y1]," there are ",#XY," solutions");
         S = matdet(M1*x+M2);
-        
+
         XYZ0 = map_quartic_to_4descent(M1,M2,[x1_,y1]);
         my(x1,x2,x3,x4);
         [x1,x2,x3,x4] = ['x1,'x2,'x3,'x4];
@@ -353,28 +350,28 @@ ellheegner_4descent_point_by_z(E,z,M1,M2,prec=400) = {
         S2 = X*M2*X~;
 
         my(n1 = floor(prec/40),n);
-        
+
         \\ Try different precision levels
-        for(m = 1,#XYZ0, 
+        for(m = 1,#XYZ0,
             \\print("k, m = ",[k,m]);
-            for(n = 1,n1+2, 
+            for(n = 1,n1+2,
                 M4 = get_heegner_M4([S1,S2],X,XYZ0[m],10^(40*n));
                 Xn = qflll(M4~);
-                if(#Xn<4, 
+                if(#Xn<4,
                     next();
                 );
-                
+
                 \\ Test if we found a rational point
                 xn = (Xn*([1,0,0,0]~))~;
                 s1 = xn*M1*xn~;
                 s2 = xn*M2*xn~;
-                if(s1==0&&s2==0, 
+                if(s1==0&&s2==0,
                     found = 1;
                     print([k,m,n,xn]);
                     return([found,xn]);
                 );
             );
-            if(found, 
+            if(found,
                 break();
             );
         );
@@ -383,7 +380,7 @@ ellheegner_4descent_point_by_z(E,z,M1,M2,prec=400) = {
     if(!found,
         print("Solution not found!!!");
     );
-    
+
     return([found,-1]);
 }
 
@@ -395,19 +392,17 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
     print("using precision ",prec1);
     prec2 = floor(prec1*log(10)/log(2));
     print("using bit precision ",prec2);
-    
+
     \\ Compute Heegner point z-coordinate if not provided
-    if(Z == -1, 
+    if(Z == -1,
         localbitprec(prec2);
         Z = ellheegner_z(E,prec2);
     );
     print("Z = ",Z);
-    
+
     localprec(prec1*3);
-    z1   = Z[1]; 
-    t1   = Z[2][1];
-    t2   = Z[2][2];
-    indx = round(Z[3]/Z[1]);
+    [z1,indx] = Z;
+    [t1,t2] = E.omega;
 
     my(m1,found,P,m2);
     found = 0;
@@ -416,53 +411,33 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
     my(disc);
     disc = E.disc;
     print("indx = ",indx);
-    
+
     \\ Try different combinations of m1 and m2
-    for(m2 = 0,indx, 
+    for(m2 = 0,indx,
         m1 = indx - m2;
         print("m1 = ",m1);
         z2 = (-z1+m1*t1)/indx;
-        res = ellheegner_4descent_point_by_z(E,z2,M1,M2,prec1);
+        res = ellheegner_4descent_point_by_z(E,z2,M1,M2,3*prec1);
         found = res[1];
         P = res[2];
-        if(found, 
+        if(found,
             break();
         );
 
-        if(disc>0, 
+        if(disc>0,
             print("disc > 0");
             \\ For curves with positive discriminant, try shifted z
-            \\ z2 = gadd(z2,gmul2n(Oim,-1))
             z2 += t2/2;
-            res = ellheegner_4descent_point_by_z(E,z2,M1,M2,prec1);
+            res = ellheegner_4descent_point_by_z(E,z2,M1,M2,3*prec1);
             found = res[1];
             P = res[2];
-            if(found, 
+            if(found,
                 break();
             );
 
         );
     
     );
-    /*
-    if(!found, 
-        for(m1 = 0,indx, 
-            z2 = (-z1+m1*t1)/indx;
-            if(disc>0, 
-                print("disc > 0");
-                \\ z2 = gadd(z2,gmul2n(Oim,-1))
-                z2 -= t2/2;
-                res = ellheegner_4descent_point_by_z(E,z2,M1,M2,prec1);
-                found = res[1];
-                P = res[2];
-                if(found, 
-                    break();
-                );
-
-            );
-        );
-    );
-    */
     print("P = ",P);
     return(P);
 }
@@ -490,6 +465,6 @@ get_minimalmodel_point(M1,M2,P) = {
     print(e2);
     print("z2 = ",ellpointtoz(e2,ellneg(e2,P2)));
     print("height = ",ellheight(e2,P2));
-    
+
     return(P2);
 }

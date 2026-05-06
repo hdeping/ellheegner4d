@@ -1371,15 +1371,15 @@ ellheegner_z(GEN E,long prec1)
     pari_printf("precision = %ld\n", bitneeded);
     //if (bitprec>=bitneeded) break;
     bitprec = bitneeded;
-    pari_printf("bitprec = %ld\n", bitprec);
+    //pari_printf("bitprec = %ld\n", bitprec);
     prec = nbits2prec(bitprec) + EXTRAPRECWORD;
-    pari_printf("prec = %ld\n", prec);
+    //pari_printf("prec = %ld\n", prec);
 
   // use new bitprec
       prec = prec1;
       bitprec = prec;
-      pari_printf("using new prec = %ld\n", prec);
-      pari_printf("using new bitprec = %ld\n", bitprec);
+      //pari_printf("using new prec = %ld\n", prec);
+      //pari_printf("using new bitprec = %ld\n", bitprec);
       om = ellR_omega(E,prec);
 
   indmult = heegner_indexmult(om, wtor, tam, prec);
@@ -1396,9 +1396,8 @@ ellheegner_z(GEN E,long prec1)
   z = gmulsg(2*lint, z);
   pari_printf("z=%.*Pg\n",nbits2ndec(bitprec), z);
   indx = lint*2*ind;
-  pari_printf("lint = %ld, ind = %ld, indx = %ld",lint,ind,indx);
-  z = mkvec3(z,om,gmulsg(indx,z));
-  return gerepilecopy(av, z);
+  //pari_printf("lint = %ld, ind = %ld, indx = %ld",lint,ind,indx);
+  return gerepilecopy(av, mkvec2(z, stoi(indx)));
 }
 
 GEN
