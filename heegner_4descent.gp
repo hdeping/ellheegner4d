@@ -447,18 +447,11 @@ ellheegner_4descent(E,M1,M2,height,Z=-1) = {
     /*
     if(!found, 
         for(m1 = 0,indx, 
-            z2 = (z1+m1*t1)/indx;
-            res = ellheegner_4descent_point_by_z(E,z2,M1,M2,prec1);
-            found = res[1];
-            P = res[2];
-            if(found, 
-                break();
-            );
-
+            z2 = (-z1+m1*t1)/indx;
             if(disc>0, 
                 print("disc > 0");
                 \\ z2 = gadd(z2,gmul2n(Oim,-1))
-                z2 += t2/2;
+                z2 -= t2/2;
                 res = ellheegner_4descent_point_by_z(E,z2,M1,M2,prec1);
                 found = res[1];
                 P = res[2];
