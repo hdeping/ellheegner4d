@@ -21,6 +21,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. */
 #include "paripriv.h"
 
 #define DEBUGLEVEL DEBUGLEVEL_ellanal
+#include <sys/time.h>
+#define STEP2 100
+typedef struct timeval mytime;
 
 struct baby_giant
 {
@@ -1332,12 +1335,12 @@ GEN
 ellheegner_z(GEN E,long prec1)
 {
   pari_sp av = avma;
-  GEN z, P, ht, points, coefs, s, om, indmult;
-  GEN sel, etal, et, cbb, A, dAi, T, Ag, At;
-  long ind, indx, lint, k, l, wtor, etor, ndisc, ltors2, selrank;
+  GEN z, ht, points, coefs, s, om, indmult;
+  GEN sel, etal, et, cbb, A, dAi;
+  long ind, indx, lint, k, l, wtor, etor, ndisc;
   long bitprec = 16, prec = nbits2prec(bitprec) + EXTRAPRECWORD;
   pari_timer ti;
-  GEN N, cb, tam, torsion, nfA;
+  GEN N, cb, tam, torsion;
   E = ellanal_globalred_all(E, &cb, &N, &tam);
   if (ellrootno_global(E) == 1)
     pari_err_DOMAIN("ellheegner", "(analytic rank)%2","=",gen_0,E);
@@ -1345,10 +1348,7 @@ ellheegner_z(GEN E,long prec1)
   wtor = itos( gel(torsion,1) ); /* #E(Q)_tor */
   etor = wtor > 1? itou(gmael(torsion, 2, 1)): 1; /* exponent of E(Q)_tor */
   sel = ell2selmer_basis(E, &cbb, prec);
-  etal = gel(sel,1); A = gel(sel,2); et = gel(etal,1); T = gel(etal,3);
-  ltors2 = lg(et)-2; selrank = lg(A)-1;
-  Ag = selrank > ltors2+1 ? pol_1(etnf_get_varn(et)): gel(A,selrank);
-  At = vecslice(A,1,ltors2);
+  etal = gel(sel,1); A = gel(sel,2); et = gel(etal,1);
   dAi = gsupnorm(vec_etnf_to_basis(et,A),prec);
 
     GEN hnaive, l1;
