@@ -122,10 +122,10 @@ test(index) = {
         P1 = get_minimalmodel_point(M1,M2,P);
         if(ellisoncurve(E,P1), 
             print("The generator is correct!");
-        else,
+        ,
             print("The point is WRONG!!!");
         );
-    else,
+    ,
         print("The generator is NOT FOUND!");
     );
 }
